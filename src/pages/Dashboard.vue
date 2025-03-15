@@ -4,7 +4,7 @@
       Resumo dos pedidos
     </div>
     <div class="row q-mt-xl">
-      <q-card bordered class="col q-pa-sm">
+      <q-card class="col q-pa-sm shadow-1">
         <q-card-section>
           <q-avatar>
             <q-img
@@ -18,7 +18,7 @@
           <div class="text-subtitle1 text-bold">R$ 10</div>
         </q-card-section>
       </q-card>
-      <q-card class="col q-mx-md q-pa-sm">
+      <q-card class="col q-mx-md q-pa-sm shadow-1">
         <q-card-section>
           <q-avatar>
             <q-img
@@ -32,7 +32,7 @@
           <div class="text-subtitle1 text-bold">R$ 5</div>
         </q-card-section>
       </q-card>
-      <q-card class="col q-pa-sm">
+      <q-card class="col q-pa-sm shadow-1">
         <q-card-section>
           <q-avatar>
             <q-img
@@ -48,7 +48,7 @@
       </q-card>
     </div>
     <div class="q-mt-xl">
-      <q-table 
+      <q-table
         class="my-sticky-virtscroll-table"
         virtual-scroll
         separator="cell"
@@ -64,9 +64,9 @@
       >
         <template v-slot:header="props">
           <q-tr :props="props" class="bg-primary text-white">
-            <q-th 
-              v-for="col in props.cols" 
-              :key="col.name" 
+            <q-th
+              v-for="col in props.cols"
+              :key="col.name"
               :props="props"
               align="left"
               class="text-center"
@@ -78,9 +78,9 @@
 
         <template v-slot:body="props">
           <q-tr :props="props">
-            <q-td 
-              v-for="col in props.cols" 
-              :key="col.name" 
+            <q-td
+              v-for="col in props.cols"
+              :key="col.name"
               :props="props"
               align="left"
               class="text-center"
@@ -93,31 +93,31 @@
         <template v-slot:bottom>
           <div class="row justify-around full-width">
             <q-btn-group flat class="col-6 q-px-md">
-              <q-btn 
-                flat 
-                dense 
+              <q-btn
+                flat
+                dense
                 round
                 color="primary"
-                size="md" 
-                icon="first_page" 
-                :disable="pagination.page === 1" 
-                @click="setPage(1)" 
+                size="md"
+                icon="first_page"
+                :disable="pagination.page === 1"
+                @click="setPage(1)"
               />
-              <q-btn 
-                flat 
+              <q-btn
+                flat
                 round
-                color="primary" 
-                icon="chevron_left" 
-                :disable="pagination.page === 1" 
-                @click="prevPage" 
+                color="primary"
+                icon="chevron_left"
+                :disable="pagination.page === 1"
+                @click="prevPage"
               />
-              <div 
-                v-for="i in visiblePages" 
+              <div
+                v-for="i in visiblePages"
                 :key="i"
-                class="q-mx-md q-py-sm"
+                class="q-mx-xs q-py-sm"
               >
-                <q-btn 
-                  flat 
+                <q-btn
+                  flat
                   round
                   :color="pagination.page === i ? 'primary' : 'accent'"
                   @click="setPage(i)"
@@ -126,36 +126,43 @@
                 </q-btn>
               </div>
 
-              <q-btn 
-                flat 
+              <q-btn
+                flat
                 round
                 color="primary"
-                icon="chevron_right" 
-                :disable="pagination.page === totalPages" 
-                @click="nextPage" 
+                icon="chevron_right"
+                :disable="pagination.page === totalPages"
+                @click="nextPage"
               />
-              <q-btn 
-                flat 
-                dense 
+              <q-btn
+                flat
+                dense
                 round
-                color="primary" 
-                icon="last_page" 
-                :disable="pagination.page === totalPages" 
-                @click="setPage(totalPages)" 
+                color="primary"
+                icon="last_page"
+                :disable="pagination.page === totalPages"
+                @click="setPage(totalPages)"
               />
             </q-btn-group>
             <div class="col-2 q-py-md text-accent text-subtitle2">
-              {{ pagination.page }} de {{ Math.ceil(rows.length / pagination.rowsPerPage) }} páginas
+              {{ pagination.page }} de
+              {{ Math.ceil(rows.length / pagination.rowsPerPage) }} páginas
             </div>
-            <q-select
-              class="col-4 q-py-sm"
-              outlined
-              dense
-              options-dense
-              v-model="pagination.rowsPerPage"
-              :options="[10, 20, 30, 50]"
-              label="Linhas por página"
-            />
+            <div class="row q-py-sm col-3">
+              <div
+                class="col-6 q-mt-sm text-accent"
+              >
+                Linhas por página
+              </div>
+              <q-select
+                class="col-6"
+                outlined
+                dense
+                options-dense
+                v-model="pagination.rowsPerPage"
+                :options="[10, 20, 30, 50]"
+              />
+            </div>
           </div>
         </template>
       </q-table>
@@ -178,7 +185,9 @@ const pagination = ref({
   rowsPerPage: 10
 });
 const rows = ref([...Array(100).keys()]);
-const totalPages = computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage));
+const totalPages = computed(
+  () => Math.ceil(rows.value.length / pagination.value.rowsPerPage)
+);
 
 const visiblePages = computed(() => {
   let start = Math.max(1, pagination.value.page - 2);
