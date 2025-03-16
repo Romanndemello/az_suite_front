@@ -1,16 +1,32 @@
 <template>
-  <q-layout view="lhh lpR lFf">
+  <q-layout class="app-font" view="lhh lpR lFf">
     <q-header>
       <q-toolbar class="bg-secondary text-accent justify-end">
+        <q-btn
+          flat
+          dense
+          no-caps
+          class="text-accent text-caption text-left q-pr-md"
+        >
+          <q-avatar dense>
+            <q-img
+              :src="iconNotifications"
+              class="custom-icon"
+              style="width: 40%;"
+            />
+
+          </q-avatar>
+          Avisos
+        </q-btn>
         <div
-          class="q-pa-md text-right text-caption"
+          class="q-pa-md q-ml-lg text-right text-caption"
         >
           Olá,
           <p
             class="no-margin text-bold text-subtitle1"
             style="line-height: 90%;"
           >
-            Darta
+            {{ user ?? 'Usuário' }}
           </p>
         </div>
         <q-avatar
@@ -28,6 +44,7 @@
       v-model="leftDrawerOpen"
       class="shadow-1"
       show-if-above
+      bordered
     >
       <q-list class="q-gutter-y-md q-py-md text-center q-mx-md">
         <q-item-label
@@ -58,13 +75,13 @@
             <div class="col-10 row">
               <div
                 class="text-caption"
-                style="color: #97A1A8;"
+                style="color: #97A1A8; text-decoration: underline; font-size: 8px;"
               >
                 Termos de uso
               </div>
               <div
                 class="text-caption q-ml-md"
-                style="color: #97A1A8;"
+                style="color: #97A1A8; text-decoration: underline; font-size: 8px;"
               >
                 Política de Privacidade
               </div>
@@ -89,7 +106,9 @@ import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue'
 import iconDashboard from '../assets/icon_dashboard.png';
 import iconProfile from '../assets/icon_profile.png';
 import iconFooter from '../assets/icon_footer.png'
+import iconNotifications from '../assets/icon_notification.png';
 
+const user = localStorage.getItem('user');
 defineOptions({
   name: 'MainLayout'
 });

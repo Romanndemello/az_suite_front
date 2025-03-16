@@ -2,9 +2,13 @@
   <q-layout>
     <q-page-container>
       <q-page class="row full-height">
+        <!-- Coloquei os campos de login centralizados como sugestão de alteração,
+        caso não aprovado retorno ao plano original do Figma -->
         <div class="col-12 col-md-7 flex flex-center bg-white">
           <div class="login-form">
-            <q-img :src="logo" class="logo" />
+            <div class="text-center">
+              <q-img :src="logo" class="logo" />
+            </div>
             <q-form @submit="onSubmit">
               <div class="text-subtitle2 text-bold text-primary">
                 E-mail
@@ -21,17 +25,16 @@
               </div>
               <q-input
                 v-model="password"
-                type="password"
+                :type="isPwd ? 'password' : 'text'"
                 outlined
                 class="q-mb-md"
-                :dense="true"
-                :type="isPwd ? 'password' : 'text'"
+                dense
               >
                 <template v-slot:append>
                   <q-icon
                     :name="isPwd ? 'visibility_off' : 'visibility'"
                     class="cursor-pointer"
-                    @click="isPwd = !isPwd"
+                    @click="togglePassword"
                   />
                 </template>
               </q-input>
@@ -53,6 +56,12 @@
               />
             </q-form>
           </div>
+          <div
+            class="absolute-bottom-left q-mb-xs q-ml-sm"
+            style="font-size: 10px; color: #97A1A8;"
+          >
+            ® Desenvolvido por Azape
+          </div>
         </div>
         <div class="col-12 col-md-5 bg-image"></div>
       </q-page>
@@ -62,15 +71,42 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import CryptoJS from 'crypto-js';
 import logo from '../assets/logo.png';
 
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 const email = ref('');
 const password = ref('');
 const isPwd = ref(true);
 
+const togglePassword = () => {
+  isPwd.value = !isPwd.value;
+};
+
 const onSubmit = () => {
-  console.log('Email:', email.value);
-  console.log('Password:', password.value);
+  const opt = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value,
+    })
+  }
+  fetch('http://localhost:3333/proof/session', opt)
+  .then((response) => response.json())
+  .then((data) => {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', data.profile.name);
+    router.push('/dashboard');
+    console.log(data);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 };
 </script>
 
