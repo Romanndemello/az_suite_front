@@ -99,10 +99,11 @@ const onSubmit = () => {
   fetch('http://localhost:3333/proof/session', opt)
   .then((response) => response.json())
   .then((data) => {
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', data.profile.name);
-    router.push('/dashboard');
-    console.log(data);
+    if(data.token !== undefined) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', data.profile.name);
+      router.push('/dashboard');
+    }
   })
   .catch((err) => {
     console.error(err);
