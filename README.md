@@ -1,6 +1,6 @@
 # Az Suite (az-suite-front)
 
-Order tracking system
+Front-End desenvolvido com Vue3 usando TypeScript e Quasar Framework
 
 ## Install the dependencies
 ```bash
